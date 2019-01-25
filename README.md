@@ -1,6 +1,6 @@
 # AhgoraVai
 Extensão do Chrome para adicionar informações relevantes (ou não) no Ahgora.
-Por enquanto está só calculando a hora que finaliza a carga horária de 08:48, porém só com uma pausa (teoricamente do almoço).
+Por enquanto está só calculando a hora que finaliza a carga horária de 08:48 do dia corrente. E adicionando em SALDO as horas que ainda não foram aprovadas após jutificar.
 
 Instale: https://chrome.google.com/webstore/detail/ahgoravai/ahindcgfbgeikcmopeoigomngdbngelm
 
