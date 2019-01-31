@@ -3,6 +3,11 @@ class AhgoraVai {
     this.workload = '08:48';
     this.dailyTable = $('.table-batidas:eq(1) tbody tr');
     this.totalTable = $('#tableTotalize tbody tr');
+    this.today = new Date().toLocaleDateString('pt-BR', {
+      day : 'numeric',
+      month : 'numeric',
+      year : 'numeric'
+    }).split(' ')[0].substring(0, 5);
 
     await this.recalculateWithJustifies();
     this.canIGoHome();
@@ -109,7 +114,10 @@ class AhgoraVai {
         if (workedHoursOld && workedHoursOld != `-${this.workload}`) {
           partialAlreadyTotalized = this.sum(partialAlreadyTotalized, this.parse(workedHoursOld));
         }
-        totalWorked = this.sum(totalWorked, worked);
+
+        if ($(row).find('td:first').text().trim() != this.today) {
+          totalWorked = this.sum(totalWorked, worked);
+        }
 
         $(row).find('td:eq(6)').html(`Horas Trabalhadas: ${this.format(worked)}`);
       }
@@ -139,15 +147,9 @@ class AhgoraVai {
   }
 
   canIGoHome() {
-    const today = new Date().toLocaleDateString('pt-BR', {
-      day : 'numeric',
-      month : 'numeric',
-      year : 'numeric'
-    }).split(' ')[0].substring(0, 5);
-
     let dayRow;
     $(this.dailyTable).each((i, value) => {
-      if ($(value).find('td:first').text().trim() == today) {
+      if ($(value).find('td:first').text().trim() == this.today) {
         dayRow = value;
         return;
       }
