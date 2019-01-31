@@ -98,6 +98,7 @@ class AhgoraVai {
         let worked = { hour: 0, minute: 0 };
 
         for (let i = 0; i < tracks.length; i = i + 2) {
+          if ((i + 1) >= tracks.length) { break; }
           worked = this.sum(
             worked,
             this.subtract(this.parse(tracks[i]), this.parse(tracks[i + 1]))
@@ -105,7 +106,7 @@ class AhgoraVai {
         }
 
         const workedHoursOld = $(row).find('td:eq(6)').html().split('<br>')[0].split(': ')[1];
-        if (workedHoursOld != `-${this.workload}`) {
+        if (workedHoursOld && workedHoursOld != `-${this.workload}`) {
           partialAlreadyTotalized = this.sum(partialAlreadyTotalized, this.parse(workedHoursOld));
         }
         totalWorked = this.sum(totalWorked, worked);
