@@ -96,7 +96,7 @@ class AhgoraVai {
       tracks = tracks.split(', ').sort();
       $(tracksTd).html(tracks.join(', '));
 
-      if (tracks.length % 2 != 0) { tracks.slice(-1); }
+      if (tracks.length % 2 != 0) { tracks = tracks.slice(0, -1); }
 
       if (tracks.length > 0) {
         tracks = tracks.reverse();
