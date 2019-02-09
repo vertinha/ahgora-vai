@@ -39,39 +39,31 @@ class AhgoraVai {
     return `${twoDigits(hour.hour)}:${twoDigits(minute)}`;
   }
 
-  sum(hour1, hour2) {
-    let hour = hour1.hour + hour2.hour;
-    let minute = hour1.minute + hour2.minute;
+  toMinutes(hour) {
+    return hour.hour * 60 + hour.minute;
+  }
 
-    if (minute >= 60) {
-      minute = minute - 60;
-      hour++;
+  toHour(minutes) {
+    let hour;
+    let hoursFloat = minutes / 60;
+    if (hoursFloat < 0) {
+      hour = Math.ceil(hoursFloat);
+    } else {
+      hour = Math.floor(hoursFloat);
     }
 
-    if (hour < 0 && minute > 0) {
-      minute = minute * -1;
-    }
-
+    let minute = minutes % 60;
     return { hour, minute };
   }
 
+  sum(hour1, hour2) {
+    let delta = this.toMinutes(hour1) + this.toMinutes(hour2);
+    return this.toHour(delta)
+  }
+
   subtract(hour1, hour2) {
-    let hour;
-    let minute;
-
-    if (hour1.minute < hour2.minute) {
-      minute = 60 - hour2.minute + hour1.minute;
-      hour = hour1.hour - hour2.hour + 1;
-    } else {
-      minute = hour1.minute - hour2.minute;
-      hour = hour1.hour - hour2.hour;
-    }
-
-    if (hour < 0 && minute > 0) {
-      minute = minute * -1;
-    }
-
-    return { hour, minute };
+    let delta = this.toMinutes(hour1) - this.toMinutes(hour2);
+    return this.toHour(delta);
   }
 
   async recalculateWithJustifies() {
