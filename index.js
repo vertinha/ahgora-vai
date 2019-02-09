@@ -3,11 +3,13 @@ class AhgoraVai {
     this.workload = '08:48';
     this.dailyTable = $('.table-batidas:eq(1) tbody tr');
     this.totalTable = $('#tableTotalize tbody tr');
-    this.today = new Date().toLocaleDateString('pt-BR', {
+    let today = new Date();
+    this.today = today.toLocaleDateString('pt-BR', {
       day : 'numeric',
       month : 'numeric',
       year : 'numeric'
     }).split(' ')[0].substring(0, 5);
+    this.rightNow = this.parse(today.getHours() + ":" + today.getMinutes());
 
     await this.recalculateWithJustifies();
     this.canIGoHome();
@@ -148,7 +150,7 @@ class AhgoraVai {
     });
 
     let workload = this.parse(this.workload);
-    let leave, started;
+    let leave, started, leavingNow;
 
     let worked = $(dayRow).find('td:eq(6)').text().replace('Horas Trabalhadas: ', '');
     if (worked != '') {
@@ -166,8 +168,11 @@ class AhgoraVai {
 
     leave = this.sum(started, workload);
 
+    leavingNow = this.subtract(this.rightNow, leave);
+
     const tracksTd = $(dayRow).find('td:eq(2)');
     $(tracksTd).html(`${$(tracksTd).html().trim()}, \<span style='font-weight:bold;color:green;'>${this.format(leave)}</span>`);
+    $(tracksTd).html(`${$(tracksTd).html().trim()}, \<span style='font-weight:bold;color:orange;'>${this.format(leavingNow)}</span>`);
   }
 }
 
