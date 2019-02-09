@@ -35,7 +35,7 @@ class AhgoraVai {
 
   format(hour) {
     let minute = hour.minute < 0 ? hour.minute * -1 : hour.minute;
-    const twoDigits = (value) => !value ? value : value.toString().padStart(2, '0');
+    const twoDigits = (value) => value.toString().padStart(2, '0');
     return `${twoDigits(hour.hour)}:${twoDigits(minute)}`;
   }
 
