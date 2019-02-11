@@ -3,11 +3,13 @@ class AhgoraVai {
     this.workload = '08:48';
     this.dailyTable = $('.table-batidas:eq(1) tbody tr');
     this.totalTable = $('#tableTotalize tbody tr');
-    this.today = new Date().toLocaleDateString('pt-BR', {
+    let today = new Date();
+    this.today = today.toLocaleDateString('pt-BR', {
       day : 'numeric',
       month : 'numeric',
       year : 'numeric'
     }).split(' ')[0].substring(0, 5);
+    this.rightNow = this.parse(today.getHours() + ":" + today.getMinutes());
 
     await this.recalculateWithJustifies();
     this.canIGoHome();
@@ -35,43 +37,35 @@ class AhgoraVai {
 
   format(hour) {
     let minute = hour.minute < 0 ? hour.minute * -1 : hour.minute;
-    const twoDigits = (value) => !value ? value : value.toString().padStart(2, '0');
+    const twoDigits = (value) => value.toString().padStart(2, '0');
     return `${twoDigits(hour.hour)}:${twoDigits(minute)}`;
   }
 
-  sum(hour1, hour2) {
-    let hour = hour1.hour + hour2.hour;
-    let minute = hour1.minute + hour2.minute;
+  toMinutes(hour) {
+    return hour.hour * 60 + hour.minute;
+  }
 
-    if (minute >= 60) {
-      minute = minute - 60;
-      hour++;
+  toHour(minutes) {
+    let hour;
+    let hoursFloat = minutes / 60;
+    if (hoursFloat < 0) {
+      hour = Math.ceil(hoursFloat);
+    } else {
+      hour = Math.floor(hoursFloat);
     }
 
-    if (hour < 0 && minute > 0) {
-      minute = minute * -1;
-    }
-
+    let minute = minutes % 60;
     return { hour, minute };
   }
 
+  sum(hour1, hour2) {
+    let delta = this.toMinutes(hour1) + this.toMinutes(hour2);
+    return this.toHour(delta)
+  }
+
   subtract(hour1, hour2) {
-    let hour;
-    let minute;
-
-    if (hour1.minute < hour2.minute) {
-      minute = 60 - hour2.minute + hour1.minute;
-      hour = hour1.hour - hour2.hour + 1;
-    } else {
-      minute = hour1.minute - hour2.minute;
-      hour = hour1.hour - hour2.hour;
-    }
-
-    if (hour < 0 && minute > 0) {
-      minute = minute * -1;
-    }
-
-    return { hour, minute };
+    let delta = this.toMinutes(hour1) - this.toMinutes(hour2);
+    return this.toHour(delta);
   }
 
   async recalculateWithJustifies() {
@@ -156,7 +150,7 @@ class AhgoraVai {
     });
 
     let workload = this.parse(this.workload);
-    let leave, started;
+    let leave, started, leavingNow;
 
     let worked = $(dayRow).find('td:eq(6)').text().replace('Horas Trabalhadas: ', '');
     if (worked != '') {
@@ -174,8 +168,11 @@ class AhgoraVai {
 
     leave = this.sum(started, workload);
 
+    leavingNow = this.subtract(this.rightNow, leave);
+
     const tracksTd = $(dayRow).find('td:eq(2)');
     $(tracksTd).html(`${$(tracksTd).html().trim()}, \<span style='font-weight:bold;color:green;'>${this.format(leave)}</span>`);
+    $(tracksTd).html(`${$(tracksTd).html().trim()}, \<span style='font-weight:bold;color:orange;'>${this.format(leavingNow)}</span>`);
   }
 }
 
