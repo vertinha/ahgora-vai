@@ -82,7 +82,7 @@ class AhgoraVai {
     
       const row = $(element).parents('tr');
       const tracksTd = $(row).find('td:eq(2)');
-      let tracks = tracksTd.html();
+      let tracks = tracksTd.html().trim();
       if (tracks != '') {
           tracks += ', ';
       }
