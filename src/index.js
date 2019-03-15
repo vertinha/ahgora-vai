@@ -1,3 +1,5 @@
+import $ from "jquery"
+
 class AhgoraVai {
   async execute() {
     this.workload = '08:48';

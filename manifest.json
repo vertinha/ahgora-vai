@@ -1,26 +1,27 @@
 {
-    "manifest_version": 2,
-    "name": "AhgoraVai",
-    "version": "0.3.0",
-    "icons": {
-       "48": "icon48.png",
-       "128": "icon128.png"
+  "name": "AhgoraVai",
+  "version": "<set-this-in-package-json>",
+  "background": {
+    "scripts": [ "background.bundle.js" ],
+    "persistent": false
+  },
+  "icons": {
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  },
+  "manifest_version": 2,
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "page_action": {
+    "default_icon": {
+      "19" : "icon-19.png"
     },
-    "page_action": {
-        "default_icon": {
-            "19" : "icon19.png"
-        },
-        "default_title": "AhgoraVai"
-    },
-    "permissions": [
-        "https://www.ahgora.com.br/*"
-    ],
-    "background": {
-        "scripts": [ "background.js" ],
-        "persistent": false
-    },
-    "content_scripts": [ {
-        "js": [ "jquery.js", "index.js" ],
-        "matches": [ "https://www.ahgora.com.br/externo/batidas" ]
-    } ]
+    "default_title": "AhgoraVai"
+  },
+  "permissions": [
+    "https://www.ahgora.com.br/*"
+  ],
+  "content_scripts": [ {
+    "js": [ "index.bundle.js" ],
+    "matches": [ "https://www.ahgora.com.br/externo/batidas" ]
+  } ]
 }

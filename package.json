@@ -1,0 +1,21 @@
+{
+  "name": "ahgora-vai",
+  "version": "0.3.0",
+  "description": "Chrome extension that give superpowers to Ahgora's time sheet page",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack -w"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^1.0.0",
+    "copy-webpack-plugin": "^4.6.0",
+    "fs-extra": "7.0.1",
+    "webpack": "4.28.4",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "3.1.14",
+    "write-file-webpack-plugin": "4.5.0"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}
