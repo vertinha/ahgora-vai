@@ -154,7 +154,7 @@ class AhgoraVai {
     let workload = this.parse(this.workload);
     let leave, started, leavingNow;
 
-    let worked = $(dayRow).find('td:eq(6)').text().replace('Horas Trabalhadas: ', '');
+    let worked = $(dayRow).find('td:eq(6)').text().replace('Horas Previstas: 08:48', '').replace('Horas Trabalhadas: ', '');
     if (worked != '') {
       worked = this.parse(worked);
       workload = this.subtract(workload, worked);
