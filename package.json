@@ -1,6 +1,6 @@
 {
   "name": "ahgora-vai",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Chrome extension that give superpowers to Ahgora's time sheet page",
   "scripts": {
     "build": "webpack",

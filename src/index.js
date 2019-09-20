@@ -106,13 +106,13 @@ class AhgoraVai {
           );
         }
 
-        const workedHoursOld = $(row).find('td:eq(6)').html().split('<br>')[0].split(': ')[1];
-        if (workedHoursOld && workedHoursOld != `-${this.workload}`) {
-          partialAlreadyTotalized = this.sum(partialAlreadyTotalized, this.parse(workedHoursOld));
-        }
-
         if ($(row).find('td:first').text().trim() != this.today) {
           totalWorked = this.sum(totalWorked, worked);
+
+          const workedHoursOld = $(row).find('td:eq(6)').html().split('<br>')[0].split(': ')[1];
+          if (workedHoursOld && workedHoursOld != `-${this.workload}`) {
+            partialAlreadyTotalized = this.sum(partialAlreadyTotalized, this.parse(workedHoursOld));
+          }
         }
 
         $(row).find('td:eq(6)').html(`Horas Trabalhadas: ${this.format(worked)}`);
