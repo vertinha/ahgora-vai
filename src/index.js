@@ -119,9 +119,40 @@ class AhgoraVai {
       }
     });
 
-    if (totalWorked.hour > 0 || totalWorked.minute > 0) {
-      this.refreshTotal(this.subtract(totalWorked, partialAlreadyTotalized));
-    }
+    this.refreshTotalWorkedHours();
+  }
+
+  refreshTotalWorkedHours() {
+    let totalWorkedHours = this.parse('00:00')
+
+    $(".table-batidas:last tr").each((index, element) => {
+      if (index > 1) {
+        let apurado = $(element).find("td:eq(6)").html()
+        let apuradoSplitted = apurado.split("<br>")
+
+        if (apurado != '' && apurado != undefined && apurado != null) {
+          let workedHours = '';
+          if (apuradoSplitted[0].startsWith("Horas Trabalhadas")) {
+              workedHours = apuradoSplitted[0].replace("Horas Trabalhadas: ", "").trim()
+          } else if (apuradoSplitted.length > 1 && apuradoSplitted[1].startsWith("Horas Previstas") == false) {
+              workedHours = apuradoSplitted[1].split(": ")[1].trim()
+          } else if (apuradoSplitted.length == 1 && apuradoSplitted[0].startsWith("Horas Previstas")) {
+            workedHours = apuradoSplitted[0].split(": ")[1].trim()
+        }
+
+          if (workedHours != '') {
+            totalWorkedHours = this.sum(totalWorkedHours, this.parse(workedHours));
+          }
+        }
+      }
+    });
+
+    let saldo = this.subtract(
+      totalWorkedHours,
+      this.parse($("#tableTotalize tr:eq(1) td:eq(1)").text().trim())
+    );
+
+    $($("#tableTotalize tr")[$("#tableTotalize tr").length - 9]).find("td:eq(1)").html($($("#tableTotalize tr")[$("#tableTotalize tr").length - 9]).find("td:eq(1)").html().trim() + " => " + this.format(saldo))
   }
 
   refreshTotal(workedNotTotalized) {
